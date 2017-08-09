@@ -62,6 +62,21 @@ class EpubStreamer {
   add(bookUrl) {
     let uri = new Uri(bookUrl);
 
+    if (uri.indexOf('http') === -1) {
+      // The book url is a system path, do not try to download it with
+      //   RNFetchBlob. Unzip it directly.
+      const sourcePath = uri.path().path;
+      const filename = this.filename(bookUrl);
+      const targetPath = `${Dirs.DocumentDir}/${this.root}/${filename}`;
+      const url = `${this.serverOrigin}/${filename}/`;
+      return unzip(sourcePath, targetPath).then(path => {
+        this.urls.push(bookUrl);
+        this.locals.push(url);
+        this.paths.push(path);
+        return url;
+      });
+    }
+
     return RNFetchBlob
       .config({
         fileCache : true,
