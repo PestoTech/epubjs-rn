@@ -25,7 +25,7 @@ class EpubStreamer {
     this.root = opts.root || "www";
     this.server = new StaticServer(this.port, this.root, { localOnly: true });
 
-    this.serverOrigin = 'file://';
+    this.serverOrigin = opts.serverOrigin || 'file://';
 
     this.urls = [];
     this.locals = [];
