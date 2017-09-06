@@ -28,7 +28,7 @@ class EpubStreamer {
     this.root = opts.root || "www";
     this.server = new StaticServer(this.port, this.root, {localOnly: true});
 
-    this.serverOrigin = 'file://';
+    this.serverOrigin = opts.serverOrigin || 'file://';
 
     this.urls = [];
     this.locals = [];
@@ -77,14 +77,15 @@ class EpubStreamer {
       });
     }
 
+    const filename = this.filename(bookUrl);
     return RNFetchBlob
       .config({
         fileCache : true,
+        path: Dirs.DocumentDir + '/' + filename,
       })
       .fetch("GET", bookUrl)
       .then((res) => {
         const sourcePath = res.path();
-        const filename = this.filename(bookUrl);
         const targetPath = `${Dirs.DocumentDir}/${this.root}/${filename}`;
         const url = `${this.serverOrigin}/${filename}/`;
 

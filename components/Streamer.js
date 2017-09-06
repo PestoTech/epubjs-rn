@@ -74,11 +74,12 @@ class EpubStreamer {
       });
     }
 
+    const filename = this.filename(bookUrl);
     return RNFetchBlob.config({
-      fileCache: true
+      fileCache: true,
+      path: Dirs.DocumentDir + '/' + filename
     }).fetch("GET", bookUrl).then(res => {
       const sourcePath = res.path();
-      const filename = this.filename(bookUrl);
       const targetPath = `${Dirs.DocumentDir}/${this.root}/${filename}`;
       const url = `${this.serverOrigin}/${filename}/`;
 
