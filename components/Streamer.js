@@ -89,8 +89,6 @@ class EpubStreamer {
         this.locals.push(url);
         this.paths.push(path);
 
-        res.flush();
-
         return url;
       });
     });
